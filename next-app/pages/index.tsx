@@ -3,10 +3,11 @@ import type { GetStaticProps, NextPage } from "next";
 import HomePageHead from "../components/head/homePageHead";
 import { initializeApollo } from "../lib/apolloClient";
 import styles from "../styles/Home.module.css";
+import Card from "../components/card/card";
 
 const QUERY = gql`
   query exempleQuery {
-    launchesPast(limit: 8) {
+    launchesPast(limit: 20) {
       id
       mission_name
       rocket {
@@ -15,16 +16,11 @@ const QUERY = gql`
       links {
         flickr_images
       }
-      
       launch_date_local
       details
     }
   }
 `;
-
-// launch_site {
-//   site_name
-//}
 
 interface Launch {
   id: number,
@@ -48,19 +44,31 @@ const Home: NextPage = () => {
   if (error) return <>{"An error occured fetching data"}</>;
   if (loading) return <>{"Loading"}</>;
 
+  function getFormattedLaunchDate(date: string) {
+    const newDate = new Date(date)
+    const day = newDate.getDate()
+    const month = newDate.getMonth() + 1
+    const year = newDate.getFullYear()
+    const formattedDate = `${day}/${month}/${year}`
+
+    return formattedDate
+  }
+
   return (
     <div className={styles.container}>
       <HomePageHead />
-      {/* Your code goes here */}
       {data?.launchesPast.map((item: Launch) => {
-        return (
-          <div key={item.id}>
-            <h3>{item.mission_name}</h3>
-            <p>Rocket: {item.rocket.rocket_name}</p>
-            <p>Launch Date: {item.launch_date_local}</p>
-            <p>Details: {item.details}</p>
-          </div>
-        );
+        if (item.links.flickr_images.length > 0) {
+          return (
+            <Card
+              key={item.id}
+              rocketName={item.rocket.rocket_name}
+              launchDate={getFormattedLaunchDate(item.launch_date_local)}
+              missionName={item.mission_name}
+              image={item.links.flickr_images}
+            />
+          );
+        }
       })}
     </div>
   );
