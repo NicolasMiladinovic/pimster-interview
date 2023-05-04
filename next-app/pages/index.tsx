@@ -1,19 +1,30 @@
-import {gql, useQuery} from "@apollo/client";
-import type {GetStaticProps, NextPage} from "next";
+import { gql, useQuery } from "@apollo/client";
+import type { GetStaticProps, NextPage } from "next";
 import HomePageHead from "../components/head/homePageHead";
-import {initializeApollo} from "../lib/apolloClient";
+import { initializeApollo } from "../lib/apolloClient";
 import styles from "../styles/Home.module.css";
 
-const EXEMPLE_QUERY = gql`
+const QUERY = gql`
   query exempleQuery {
     launchesPast {
       mission_name
+      rocket {
+        rocket_name
+      }
+      links {
+        flickr_images
+      }
+      launch_site {
+        site_name
+      }
+      launch_date_local
+      details
     }
   }
 `;
 
 const Home: NextPage = () => {
-  const {loading, error, data} = useQuery(EXEMPLE_QUERY);
+  const { loading, error, data } = useQuery(QUERY);
 
   if (error) return <>{"An error occured fetching data"}</>;
   if (loading) return <>{"Loading"}</>;
@@ -30,7 +41,7 @@ const Home: NextPage = () => {
 export const getStaticProps: GetStaticProps = async () => {
   const apolloClient = initializeApollo();
 
-  await apolloClient.query({query: EXEMPLE_QUERY});
+  await apolloClient.query({ query: QUERY });
 
   return {
     props: {},
