@@ -6,6 +6,7 @@ interface CardProps {
     rocketName: string;
     launchDate: string;
     image: string[];
+    onCardClick: () => void;
 }
 
 class Card extends Component<CardProps> {
@@ -14,11 +15,19 @@ class Card extends Component<CardProps> {
             missionName,
             rocketName,
             launchDate,
-            image
+            image,
+            onCardClick
         } = this.props;
 
+        const handleCardClick = () => {
+            onCardClick();
+        };
+
         return (
-            <div className={styles.card}>
+            <div
+                className={styles.card}
+                onClick={handleCardClick}
+            >
                 <img
                     src={image[0]}
                     className={styles.image}

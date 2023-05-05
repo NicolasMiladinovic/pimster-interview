@@ -5,3 +5,8 @@
   margin: 50px auto;
   max-width: fit-content;
 }
+
+.image {
+  width: 300px;
+  height: 300px;
+}

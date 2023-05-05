@@ -5,6 +5,7 @@
     align-items: center;
     background-color: lightgrey;
     border-radius: 20px;
+    max-width: 300px;
 }
 
 .info {
