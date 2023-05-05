@@ -96,7 +96,6 @@ const Home: NextPage = () => {
     setIsModalOpen(false);
   };
 
-  console.log(modalData);
   return (
     <div className={styles.container}>
       <HomePageHead />
